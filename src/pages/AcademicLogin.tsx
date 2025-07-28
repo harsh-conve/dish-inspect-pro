@@ -3,7 +3,6 @@ import {
   Box,
   Container,
   Paper,
-  TextField,
   Button,
   Typography,
   FormControl,
@@ -12,7 +11,6 @@ import {
   MenuItem,
   Card,
   CardContent,
-  Grid,
   Chip,
   LinearProgress,
   Table,
@@ -25,7 +23,6 @@ import {
 } from '@mui/material';
 import {
   School,
-  AccountCircle,
   TrendingUp,
   TrendingDown,
   Assessment,
@@ -47,10 +44,7 @@ interface YearComparison {
 }
 
 const AcademicLogin = () => {
-  const [studentId, setStudentId] = useState('');
-  const [password, setPassword] = useState('');
-  const [academicYear, setAcademicYear] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [academicYear, setAcademicYear] = useState('2024-2025');
 
   // Mock data for 2024-2025 performance
   const performance2024: SubjectPerformance[] = [
@@ -72,13 +66,6 @@ const AcademicLogin = () => {
     { subject: 'Computer Science', currentYear: 95, lastYear: 92, improvement: 3 },
   ];
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (studentId && password && academicYear) {
-      setIsLoggedIn(true);
-    }
-  };
-
   const getGradeColor = (grade: string) => {
     if (grade.includes('A')) return 'success';
     if (grade.includes('B')) return 'primary';
@@ -89,79 +76,31 @@ const AcademicLogin = () => {
     return improvement > 0 ? <TrendingUp color="success" /> : <TrendingDown color="error" />;
   };
 
-  if (!isLoggedIn) {
-    return (
-      <Container maxWidth="sm" sx={{ mt: 8 }}>
-        <Paper elevation={3} sx={{ p: 4 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, justifyContent: 'center' }}>
-            <School sx={{ mr: 2, fontSize: 40, color: 'primary.main' }} />
-            <Typography variant="h4" component="h1" color="primary">
-              Academic Portal
-            </Typography>
-          </Box>
-          
-          <form onSubmit={handleLogin}>
-            <TextField
-              fullWidth
-              label="Student ID"
-              value={studentId}
-              onChange={(e) => setStudentId(e.target.value)}
-              margin="normal"
-              required
-              InputProps={{
-                startAdornment: <AccountCircle sx={{ mr: 1, color: 'action.active' }} />,
-              }}
-            />
-            
-            <TextField
-              fullWidth
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              margin="normal"
-              required
-            />
-            
-            <FormControl fullWidth margin="normal" required>
-              <InputLabel>Academic Year</InputLabel>
-              <Select
-                value={academicYear}
-                label="Academic Year"
-                onChange={(e) => setAcademicYear(e.target.value)}
-              >
-                <MenuItem value="2024-2025">2024-2025</MenuItem>
-                <MenuItem value="2025-2026">2025-2026</MenuItem>
-              </Select>
-            </FormControl>
-            
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, py: 1.5 }}
-              size="large"
-            >
-              Login
-            </Button>
-          </form>
-        </Paper>
-      </Container>
-    );
-  }
-
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-        <School sx={{ mr: 2, fontSize: 40, color: 'primary.main' }} />
-        <Box>
-          <Typography variant="h4" component="h1" color="primary">
-            Academic Dashboard
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            Academic Year: {academicYear}
-          </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <School sx={{ mr: 2, fontSize: 40, color: 'primary.main' }} />
+          <Box>
+            <Typography variant="h4" component="h1" color="primary">
+              Academic Dashboard
+            </Typography>
+            <Typography variant="subtitle1" color="text.secondary">
+              Academic Year: {academicYear}
+            </Typography>
+          </Box>
         </Box>
+        <FormControl sx={{ minWidth: 200 }}>
+          <InputLabel>Academic Year</InputLabel>
+          <Select
+            value={academicYear}
+            label="Academic Year"
+            onChange={(e) => setAcademicYear(e.target.value)}
+          >
+            <MenuItem value="2024-2025">2024-2025</MenuItem>
+            <MenuItem value="2025-2026">2025-2026</MenuItem>
+          </Select>
+        </FormControl>
       </Box>
 
       {academicYear === '2024-2025' && (
@@ -304,16 +243,6 @@ const AcademicLogin = () => {
           </CardContent>
         </Card>
       )}
-      
-      <Box sx={{ mt: 3, textAlign: 'center' }}>
-        <Button
-          variant="outlined"
-          onClick={() => setIsLoggedIn(false)}
-          size="large"
-        >
-          Logout
-        </Button>
-      </Box>
     </Container>
   );
 };
